@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Technobabble Generator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+		}
+
+		#output {
+			font-size: 200%;
+		}
+
+		#myButton {
+			width: 200px;
+			height: 50pt;
+			font-size: 15pt;
+		}
+
+		@media only screen and (max-width: 600px) {
+			body {
+				text-align: center;
+			}
+		}
+	</style>
+
+</head>
+
+<body>
+	<p id="output">Loading...</p>
+	<button id="myButton">More Technobabble!</button>
+
+</body>
+<script>
+	"use strict";
+
+
+
+	const words1 = ["Acute", "Aft", "Anti-matter", "Bipolar", "Cargo", "Command", "Communication", "Computer", "Deuterium",
+		"Dorsal", "Emergency", "Engineering", "Environmental", "Flight", "Fore", "Guidance", "Heat", "Impulse",
+		"Increased", "Inertial", "Infinite", "Ionizing", "Isolinear", "Lateral", "Linear", "Matter", "Medical",
+		"Navigational", "Optical", "Optimal", "Optional", "Personal", "Personnel", "Phased", "Reduced", "Science",
+		"Ship's", "Shuttlecraft", "Structural", "Subspace", "Transporter", "Ventral"
+	];
+
+	const words2 = ["Propulsion", "Dissipation", "Sensor", "Improbability", "Buffer", "Graviton", "Replicator", "Matter",
+		"Anti-matter", "Organic", "Power", "Silicon", "Holographic", "Transient", "Integrity", "Plasma", "Fusion",
+		"Control", "Access", "Auto", "Destruct", "Isolinear", "Transwarp", "Energy", "Medical", "Environmental",
+		"Coil", "Impulse", "Warp", "Phaser", "Operating", "Photon", "Deflector", "Integrity", "Control", "Bridge",
+		"Dampening", "Display", "Beam", "Quantum", "Baseline", "Input"
+	];
+
+	const words3 = ["Chamber", "Interface", "Coil", "Polymer", "Biosphere", "Platform", "Thruster", "Deflector",
+		"Replicator", "Tricorder", "Operation", "Array", "Matrix", "Grid", "Sensor", "Mode", "Panel", "Storage",
+		"Conduit", "Pod", "Hatch", "Regulator", "Display", "Inverter", "Spectrum", "Generator", "Cloud", "Field",
+		"Terminal", "Module", "Procedure", "System", "Diagnostic", "Device", "Beam", "Probe", "Bank", "Tie-In",
+		"Facility", "Bay", "Indicator", "Cell"
+	];
+
+	console.log(words1[0]);
+
+	const rdnWord1 = words1[Math.floor(Math.random() * words1.length)];
+	const rdnWord2 = words2[Math.floor(Math.random() * words1.length)];
+	const rdnWord3 = words3[Math.floor(Math.random() * words1.length)];
+
+	const sentence = rdnWord1 + " " + rdnWord2 + " " + rdnWord3;
+	document.querySelector("p").innerHTML = sentence;
+
+	function generate(array1, array2, array3) {
+		const rdnWord1 = array1[Math.floor(Math.random() * array1.length)];
+		const rdnWord2 = array2[Math.floor(Math.random() * array2.length)];
+		const rdnWord3 = array3[Math.floor(Math.random() * array3.length)];
+
+		return rdnWord1 + " " + rdnWord2 + " " + rdnWord3;
+	}
+
+	document.querySelector("button").onclick = function () {
+		document.querySelector("p").innerHTML = generate(words1, words2, words3);
+	}
+</script>
+
+</html>

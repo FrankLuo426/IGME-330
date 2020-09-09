@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Canvas Paint App</title>
+    <style>
+        body {
+            background: #eeeeee;
+            font-family: tahoma, verdana, sans serif
+        }
+
+        #mai nCanvas {
+            background: #ffffff;
+            position: absolute;
+            z-index: 0;
+            left: 10px;
+            top: 10px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        #controls {
+            position: absolute;
+            z-index: 100;
+            left: 25px;
+            top: 25px;
+        }
+
+        label {
+            font-size: 12px;
+            margin-right: 0.75em;
+        }
+
+        #info {
+            position: absolute;
+            z-index: 100;
+            left: 10px;
+            top: 510px;
+        }
+    </style>
+    <script>
+        let canvas;
+        let currentTool = "pencil",
+            lineWidth = 1,
+            strokeStyle = "green",
+            fillStyle = "blue";
+
+        function init() {
+            canvas = document.querySelector("#mainCanvas");
+            canvas.getContext("2d").fillRect(50, 50, 100, 100);
+            document.querySelector("#btnExport").onclick = doExport;
+
+            //select
+            document.querySelector("#chooserTool").onchange = function(e){
+                currentTool = e.target.value;
+                updateInfo();
+            }
+
+            
+
+        }
+
+        function doExport() {
+            // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+            // https://www.w3schools.com/jsref/met_win_open.asp
+            const data = canvas.toDataURL();
+            const newWindow = window.open();
+            newWindow.document.body.innerHTML =
+                `<iframe src="${data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`;
+        }
+    </script>
+
+</head>
+
+<body>
+    <canvas id="mainCanvas" width="700" height="500">
+        Get a real browser!
+    </canvas>
+
+    <section id="controls">
+        <label>Tool:
+            <select id="chooserTool">
+                <option value="pencil" selected>Pencil</option>
+                <option value="rectangle">Rectangle</option>
+                <option value="line">Line</option>
+                <option value="circle">Circle</option>
+            </select>
+        </label>
+
+        <label>Line Width:
+            <select id="chooserLineWidth">
+                <option value="0">0</option>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </label>
+
+        <label>Line Color:
+            <select id="chooserStrokeStyle">
+                <option value="red">Red</option>
+                <option value="green" selected>Green</option>
+                <option value="blue">Blue</option>
+            </select>
+        </label>
+
+        <span><input id="btnClear" type="button" value="Clear" /></span>
+        <span><input id="btnExport" type="button" value="Export" /></span>
+    </section>
+
+    <section id="info">
+        <p>???</p>
+    </section>
+
+
+</body>
+
+
+</html>

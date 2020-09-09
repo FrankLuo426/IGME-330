@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Greeter</title>
+    <style>
+
+    </style>
+    <script>
+        function init() {
+            document.querySelector("#myButton").onclick = function () {
+                let name = firstName.value.trim() || "Mr. X ";
+                document.querySelector("#output").innerHTML = `Hello ${name}`;
+            };
+        }
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <button id="myButton">Click Me!</button>
+    <input id="firstName" placeholder="Type in your name">
+    <p id="output">???</p>
+</body>
+
+</html>
