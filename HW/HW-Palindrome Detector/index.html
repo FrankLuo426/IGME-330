@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Load Text - &lt;input></title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Palindrome Detector</h1>
+    <section>
+        <p><input id="input" type="text" size="50" maxlength="50" autofocus
+                value="It was a dark and stormy night ..." /></p>
+        <p id="output"></p>
+    </section>
+    <script>
+        let input = document.querySelector("#input");
+        let output = document.querySelector("#output");
+
+        input.oninput = doInput; // called whenever the content of the field changes
+        input.onchange = doChange; // called when the field loses focus or when the return key is pressed
+        input.dispatchEvent(new Event("input")); // calls doInput() when the page first loads
+
+        function doInput(e) {
+            let text = e.target.value;
+            text = text.replace(/\s+/g, '');
+            text = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"]+/g,'');
+            text = text.toLowerCase();
+            
+            let reverse = text.split("").reverse().join("");
+
+            if (text == reverse) {
+                output.style.color = "green";
+                output.innerHTML = "It is a palindrome!:-)"
+            }
+            else{
+                output.style.color = "red";
+                output.innerHTML = "It is not a palindrome!:-|"
+            }
+
+
+        }
+
+        function doChange(e) {
+            output.innerHTML = "The input field no longer has focus, or you hit `return`!";
+        }
+    </script>
+</body>
+
+</html>

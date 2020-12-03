@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Screen Saver with Controls</title>
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+
+		canvas {
+			border: 1px solid gray;
+		}
+
+		button {
+			font-size: 1.2em;
+		}
+
+		section {
+			margin: .5em 0 .5em 0;
+		}
+	</style>
+	<script src="flLIB.js"></script>
+	<script>
+		(function () {
+			// #0 - in this class we will always use ECMAScript 5's "strict" mode
+			// See what 'use strict' does here:
+			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode
+			'use strict';
+
+			// #1 call the `init` function after the pages loads
+			window.onload = init;
+			let ctx;
+			let canvas;
+			let createRectangles = true;
+			let paused = true;
+
+
+			const canvasWidth = 640;
+			const canvasHeight = 480;
+			const drawParams = Object.freeze({
+				"minRectSpan": 10,
+				"maxRectSpan": 90,
+				"minStrokeWidth": 2,
+				"maxStrokeWidth": 5
+			})
+
+
+			function init() {
+
+
+				console.log("page loaded!");
+				// #2 Now that the page has loaded, start drawing!
+
+				// A - `canvas` variable points at <canvas> tag
+				canvas = document.querySelector('canvas');
+				// B - the `ctx` variable points at a "2D drawing context"
+				canvas.width = canvasWidth;
+				canvas.height = canvasHeight;
+				ctx = canvas.getContext('2d');
+				//cls(ctx);
+				// C - all fill operations are now in red
+				ctx.fillStyle = 'red';
+
+				// D - fill a rectangle with the current fill color
+				flLIB.drawRectangle(ctx, 20, 20, 600, 440, "red");
+				flLIB.drawRectangle(ctx, 120, 120, 400, 300, "yellow", 10, "green");
+
+
+				setupUI();
+
+				update();
+			}
+
+			function setupUI() {
+				document.querySelector("#rectanglesCB").onchange = function (e) {
+					createRectangles = e.target.checked;
+				};
+				document.querySelector("#playButton").onclick = function (e) {
+					paused = false;
+					update();
+				};
+				document.querySelector("#pauseButton").onclick = function (e) {
+					paused = true;
+				};
+
+				canvas.onclick = canvasClicked;
+			}
+
+			// handy helper functions!
+
+
+
+
+			function update() {
+				if (paused) {
+					return;
+				}
+				requestAnimationFrame(update);
+				//getRandomRect(ctx);
+				if (createRectangles) getRandomRect(ctx);
+				getRandomCircle(ctx);
+				getRandomLine(ctx);
+				//draw(ctx);
+				//getName(ctx);
+			}
+
+
+
+			function getRandomRect(ctx) {
+				ctx.save();
+				ctx.beginPath();
+				ctx.rect(flLIB.getRandomInt(0, canvasWidth), flLIB.getRandomInt(0, canvasHeight), flLIB.getRandomInt(drawParams.minRectSpan,
+					drawParams.maxRectSpan), flLIB.getRandomInt(drawParams.minRectSpan, drawParams.maxRectSpan));
+				ctx.closePath();
+				ctx.lineWidth = flLIB.getRandomInt(drawParams.minStrokeWidth, drawParams.maxStrokeWidth);
+				ctx.fillStyle = flLIB.getRandomColor();
+				ctx.strokeStyle = flLIB.getRandomColor();
+				ctx.fill();
+				ctx.stroke();
+				ctx.restore();
+			}
+
+			function getRandomCircle(ctx) {
+				ctx.save();
+				ctx.beginPath();
+				ctx.arc(flLIB.getRandomInt(0, canvasWidth), flLIB.getRandomInt(0, canvasHeight), flLIB.getRandomInt(20, 70), 0, Math.PI * 2,
+					false);
+				ctx.closePath();
+				ctx.fillStyle = flLIB.getRandomColor();
+				ctx.fill();
+				ctx.restore();
+			}
+
+			function getRandomLine(ctx) {
+				ctx.save();
+				ctx.beginPath();
+				ctx.moveTo(flLIB.getRandomInt(0, canvasWidth), flLIB.getRandomInt(0, canvasHeight));
+				ctx.lineTo(flLIB.getRandomInt(0, canvasWidth), flLIB.getRandomInt(0, canvasHeight));
+				ctx.closePath();
+				ctx.strokeStyle = flLIB.getRandomColor();
+				ctx.stroke();
+				ctx.restore();
+			}
+
+			function getName(ctx) {
+				ctx.font = '48px serif';
+				ctx.strokeText('Frank Luo', flLIB.getRandomInt(0, canvasWidth), flLIB.getRandomInt(0, canvasHeight));
+			}
+
+			function draw(ctx) {
+				for (let i = 0; i < 32; i++) {
+					for (let j = 0; j < 23; j++) {
+						ctx.save();
+						ctx.fillStyle = 'rgb(' + (51 * i) + ', ' + (255 - 51 * i) + ', 255)';
+						ctx.translate(10 + j * 50, 10 + i * 50);
+						ctx.fillRect(0, 0, 20, 20);
+						ctx.restore();
+					}
+				}
+			}
+
+			function cls() {
+				setTimeout(function () {
+					cls(ctx)
+				}, flLIB.getRandomInt(5000, 10000));
+				ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+			}
+
+			function canvasClicked(e) {
+				let rect = e.target.getBoundingClientRect();
+				let mouseX = e.clientX - rect.x;
+				let mouseY = e.clientY - rect.y;
+				console.log(mouseX, mouseY);
+				let x = mouseX + flLIB.getRandomInt(-100, 100);
+				let y = mouseY + flLIB.getRandomInt(-100, 100);
+				let width = flLIB.getRandomInt(20, 50);
+				let height = flLIB.getRandomInt(20, 50);
+				let color = flLIB.getRandomColor();
+				flLIB.drawRectangle(ctx, x, y, width, height, color);
+
+			}
+		})();
+	</script>
+</head>
+
+<body>
+	<canvas>
+		Get a real browser!
+	</canvas>
+	<section>
+		<button id="playButton">Play</button> <button id="pauseButton">Pause</button>
+	</section>
+	<section>
+		<span><input type="checkbox" id="rectanglesCB" checked><label for="rectanglesCB">Create
+				Rectangles</label></span>
+	</section>
+	<section>
+		<p>Click on the screen to "spraypaint" rectangles (you probably want the screensaver to be paused)</p>
+	</section>
+</body>
+
+</html>
